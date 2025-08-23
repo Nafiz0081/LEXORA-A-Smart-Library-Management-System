@@ -1,0 +1,83 @@
+Librarian Requirements
+
+Add, update, and delete books
+
+✅ lexora_circulation.add_book
+
+✅ lexora_circulation.update_book_copies
+
+⚠️ Delete: can be done with DELETE FROM books WHERE book_id=... (safe due to FK cascade on borrowings).
+
+Manage user/member records
+
+✅ lexora_circulation.register_member
+
+✅ lexora_circulation.suspend_member
+
+✅ lexora_circulation.activate_member
+
+(Delete supported by FK cascade as well.)
+
+Issue and return books with auto-handled due dates
+
+✅ lexora_circulation.issue_book (auto sets due date, enforces borrow limits & stock availability)
+
+✅ lexora_circulation.return_book (auto fine calculation on overdue)
+
+Track overdue items and compute fines
+
+✅ Fines computed via compute_fine function + triggers
+
+✅ v_overdue_loans view & lexora_reports.overdue_list
+
+Generate reports
+
+✅ lexora_reports.top_borrowed_books
+
+✅ lexora_reports.member_history
+
+✅ lexora_reports.member_outstanding
+
+Member Requirements
+
+Search and view available books
+
+✅ v_available_books view (title, author, availability)
+
+Track current borrowed books & due dates
+
+✅ v_member_active_loans
+
+Access borrowing history
+
+✅ lexora_reports.member_history
+
+View fine details
+
+✅ lexora_reports.member_outstanding
+
+✅ borrow_outstanding (per loan)
+
+System Requirements
+
+Enforce borrow limits
+
+✅ Trigger trg_bor_before_ins checks BORROW_LIMIT_PER_MEMBER
+
+Auto return policies (due dates, fines)
+
+✅ compute_due_date + compute_fine
+
+✅ Return trigger updates fines automatically
+
+Restrict invalid operations
+
+✅ Error handling in triggers (e.g., no available copies, member suspended, borrow limit exceeded)
+
+Real-time updates of stock
+
+✅ trg_bor_after_ins decrements available_copies on issue
+
+✅ trg_bor_after_upd increments available_copies on return
+
+✅ trg_books_status auto-updates book availability status

@@ -1,0 +1,27 @@
+{
+  "name": "lexora-library-management",
+  "version": "1.0.0",
+  "description": "Smart Library Management System using OERN stack (Oracle, Express, React, Node.js)",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install",
+    "start": "cd server && npm start"
+  },
+  "keywords": [
+    "library",
+    "management",
+    "oracle",
+    "react",
+    "express",
+    "nodejs"
+  ],
+  "author": "Lexora Team",
+  "license": "MIT",
+  "devDependencies": {
+    "concurrently": "^7.6.0"
+  }
+}
