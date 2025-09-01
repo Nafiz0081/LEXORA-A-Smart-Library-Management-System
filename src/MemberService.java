@@ -109,6 +109,22 @@ public class MemberService {
         return members;
     }
 
+    // Get member's total borrowed books count using PL/SQL function
+    public static int getMemberTotalBorrows(int memberId) {
+        String sql = "SELECT fn_member_total_borrows(?) FROM dual";
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, String.valueOf(memberId));
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting member total borrows: " + e.getMessage());
+        }
+        return 0;
+    }
+
     public static List<Member> getAllMembers() {
         List<Member> members = new ArrayList<>();
         String sql = "SELECT member_id, full_name, email, phone, join_date, status FROM members";

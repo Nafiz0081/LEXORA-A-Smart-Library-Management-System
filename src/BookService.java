@@ -105,6 +105,22 @@ public class BookService {
         return books;
     }
 
+    // Count books by author using PL/SQL function
+    public static int countBooksByAuthor(String author) {
+        String sql = "SELECT fn_count_books_by_author(?) FROM dual";
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, author);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            System.err.println("Error counting books by author: " + e.getMessage());
+        }
+        return 0;
+    }
+
     public static Book getBookById(int bookId) {
         String sql = "SELECT * FROM books WHERE book_id=?";
         try (Connection conn = DbUtil.getConnection(); PreparedStatement ps = conn.prepareStatement(sql)) {

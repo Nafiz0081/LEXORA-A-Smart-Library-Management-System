@@ -57,8 +57,10 @@ public class LexoraApp {
             System.out.println("4. Reports");
             System.out.println("5. View All Books");
             System.out.println("6. View All Members");
-            System.out.println("7. Logout");
-            System.out.println("8. View Currently Rented Books");
+            System.out.println("7. Count Books by Author");
+            System.out.println("8. View Member Borrowing Stats");
+            System.out.println("9. View Currently Rented Books");
+            System.out.println("10. Logout");
             System.out.print("Select an option: ");
             String choice = scanner.nextLine();
             switch (choice) {
@@ -81,10 +83,16 @@ public class LexoraApp {
                     viewAllMembers();
                     break;
                 case "7":
-                    return;
+                    countBooksByAuthor();
+                    break;
                 case "8":
+                    viewMemberBorrowingStats();
+                    break;
+                case "9":
                     viewCurrentlyRentedBooks();
                     break;
+                case "10":
+                    return;
                 default:
                     System.out.println("Invalid option. Try again.");
             }
@@ -381,6 +389,25 @@ public class LexoraApp {
                 long daysLeft = diff / (1000 * 60 * 60 * 24);
                 System.out.println("Borrow ID: " + b.borrowId + ", Member ID: " + b.memberId + ", Book ID: " + b.bookId + ", Due: " + b.dueDate + ", Days Remaining: " + daysLeft + ", Status: " + b.status);
             }
+        }
+    }
+
+    private static void countBooksByAuthor() {
+        System.out.print("Enter author name: ");
+        String author = scanner.nextLine();
+        int count = BookService.countBooksByAuthor(author);
+        System.out.println("Total books by '" + author + "': " + count);
+    }
+
+    private static void viewMemberBorrowingStats() {
+        System.out.print("Enter member ID: ");
+        String input = scanner.nextLine();
+        try {
+            int memberId = Integer.parseInt(input);
+            int totalBorrows = MemberService.getMemberTotalBorrows(memberId);
+            System.out.println("Member ID " + memberId + " has borrowed " + totalBorrows + " books in total.");
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid member ID. Please enter a number.");
         }
     }
 
