@@ -29,14 +29,11 @@ public class AuthService {
             ps.setString(1, username);
             try (ResultSet rs = ps.executeQuery()) {
                 boolean hasRow = rs.next();
-                System.out.println("Hello1");
-                System.out.println(hasRow);
+
                 if (hasRow) {
-                    System.out.println("Hello2");
+
                     String hash = rs.getString("password_hash");
-                    System.out.println("Debug: Username: " + username);
-                    System.out.println("Debug: Retrieved hash: " + hash);
-                    System.out.println("Debug: Provided password: " + password);
+
                     if (PasswordUtil.verifyPassword(password, hash)) {
                         System.out.println("Hello");
                         int userId = rs.getInt("user_id");
